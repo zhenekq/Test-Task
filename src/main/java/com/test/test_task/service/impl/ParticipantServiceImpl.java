@@ -9,7 +9,7 @@ import com.test.test_task.repositoty.ConferenceRepository;
 import com.test.test_task.repositoty.ParticipantRepository;
 import com.test.test_task.repositoty.RoomRepository;
 import com.test.test_task.service.ParticipantService;
-import com.test.test_task.util.ExceptionStorage;
+import com.test.test_task.util.ExceptionMessageStorage;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -40,7 +40,7 @@ public class ParticipantServiceImpl implements ParticipantService {
     public ParticipantDto addToConference(Participant participant, Long conferenceId) {
         Conference conference = conferenceRepository
                 .findById(conferenceId)
-                .orElseThrow(() -> new EntityNotFoundException(ExceptionStorage.conferenceNotExists(conferenceId)));
+                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.conferenceNotExists(conferenceId)));
         Room room = roomRepository
                 .findByConferenceId(conferenceId)
                 .orElseThrow(() -> new EntityNotFoundException("Room not exists!"));
@@ -63,17 +63,17 @@ public class ParticipantServiceImpl implements ParticipantService {
     public ParticipantDto deleteById(Long conferenceId, Long participantId) {
         Conference conference = conferenceRepository
                 .findById(conferenceId)
-                .orElseThrow(() -> new EntityNotFoundException(ExceptionStorage.conferenceNotExists(conferenceId)));
+                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.conferenceNotExists(conferenceId)));
 
         Room room = roomRepository
                 .findByConferenceId(conferenceId)
-                .orElseThrow(() -> new EntityNotFoundException(ExceptionStorage.roomNotExists(conferenceId)));
+                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.roomNotExists(conferenceId)));
 
         Participant participant = participantRepository
                 .findById(participantId)
-                .orElseThrow(() -> new EntityNotFoundException(ExceptionStorage.participantNotExists(participantId)));
+                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.participantNotExists(participantId)));
         if(!participant.getConference().getId().equals(conferenceId)){
-            throw new RuntimeException(ExceptionStorage.participantNotIncluded(participantId));
+            throw new RuntimeException(ExceptionMessageStorage.participantNotIncluded(participantId));
         }
 
         participantRepository.deleteById(participantId);

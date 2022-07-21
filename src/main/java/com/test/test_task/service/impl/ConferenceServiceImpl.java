@@ -5,7 +5,7 @@ import com.test.test_task.dto.ConferenceDto;
 import com.test.test_task.entity.Conference;
 import com.test.test_task.repositoty.ConferenceRepository;
 import com.test.test_task.service.ConferenceService;
-import com.test.test_task.util.ExceptionStorage;
+import com.test.test_task.util.ExceptionMessageStorage;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -43,7 +43,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     public ConferenceDto cancelById(Long conferenceId) {
         Conference conference = conferenceRepository
                 .findById(conferenceId)
-                .orElseThrow(() -> new EntityNotFoundException(ExceptionStorage.conferenceNotExists(conferenceId)));
+                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.conferenceNotExists(conferenceId)));
         conferenceRepository.deleteById(conferenceId);
         return conferenceConverter.convertToDto(conference);
     }

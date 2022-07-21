@@ -1,8 +1,8 @@
 package com.test.test_task.util;
 
-public class ExceptionStorage {
+public class ExceptionMessageStorage {
 
-    private ExceptionStorage(){}
+    private ExceptionMessageStorage(){}
 
     public static String conferenceNotExists(Long conferenceId){
         return String.format("Conference with id: %d not exists!", conferenceId);
