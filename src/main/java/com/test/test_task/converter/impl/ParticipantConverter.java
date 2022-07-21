@@ -10,6 +10,14 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Converter for Participant
+ *
+ * @author yauheni_vozny
+ * @version 1.0
+ * @see EntityConverter
+ */
+
 @Component
 public class ParticipantConverter implements EntityConverter<Participant, ParticipantDto> {
 

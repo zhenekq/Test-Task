@@ -8,6 +8,14 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Converter for Conference
+ *
+ * @author yauheni_vozny
+ * @version 1.0
+ * @see EntityConverter
+ */
+
 @Component
 public class ConferenceConverter implements EntityConverter<Conference, ConferenceDto> {
     @Override
