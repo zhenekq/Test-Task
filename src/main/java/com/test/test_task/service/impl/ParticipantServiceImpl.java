@@ -43,9 +43,9 @@ public class ParticipantServiceImpl implements ParticipantService {
                 .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.conferenceNotExists(conferenceId)));
         Room room = roomRepository
                 .findByConferenceId(conferenceId)
-                .orElseThrow(() -> new EntityNotFoundException("Room not exists!"));
+                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.roomNotExists(conferenceId)));
         if(!room.getIsAvailable()){
-            throw new RuntimeException("Room is full!");
+            throw new RuntimeException(ExceptionMessageStorage.roomIsFull(room.getId()));
         }
 
         participant.setConference(conference);
