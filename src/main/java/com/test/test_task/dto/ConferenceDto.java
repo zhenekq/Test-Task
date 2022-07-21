@@ -2,7 +2,6 @@ package com.test.test_task.dto;
 
 import lombok.*;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 /**

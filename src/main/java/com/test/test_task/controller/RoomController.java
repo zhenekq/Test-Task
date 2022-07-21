@@ -6,6 +6,13 @@ import com.test.test_task.entity.Room;
 import com.test.test_task.service.RoomService;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller that process Room Logic
+ * @see RoomService
+ * @author yauheni_vozny
+ * @version 1.0
+ */
+
 @RestController
 @RequestMapping("/api/v1/conference/{conferenceId}/room")
 public class RoomController {
