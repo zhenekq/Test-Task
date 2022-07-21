@@ -38,6 +38,12 @@ public class ParticipantController {
         return participantService.create(participant);
     }
 
+    @PostMapping("{participantId}/attach/{conferenceId}")
+    public ParticipantDto attach(@PathVariable Long participantId,
+                                 @PathVariable Long conferenceId){
+        return participantService.addToConference(participantId, conferenceId);
+    }
+
     /**
      * DELETE request to delete participant from conference
      *

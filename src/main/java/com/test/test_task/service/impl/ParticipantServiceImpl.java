@@ -40,25 +40,26 @@ public class ParticipantServiceImpl implements ParticipantService {
 
 
     @Override
-    public ParticipantDto addToConference(Participant participant, Long conferenceId) {
-//        Conference conference = conferenceRepository
-//                .findById(conferenceId)
-//                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.conferenceNotExists(conferenceId)));
-//        Room room = roomRepository
-//                .findByConferenceId(conferenceId)
-//                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.roomNotExists(conferenceId)));
-//
-//        Long amountParticipantsOnConference = participantRepository.countParticipantsByConferenceId(conferenceId);
-//        Long roomMax = room.getMaxSeats();
-//        if(amountParticipantsOnConference >= roomMax){
-//            throw new RuntimeException(ExceptionMessageStorage.roomIsFull(room.getId()));
-//        }
-//        participant.setConference(new A(conference);
-//        Participant newParticipant = participantRepository.save(participant);
-//
-//        return converter.convertToDto(newParticipant);
+    public ParticipantDto addToConference(Long participantId, Long conferenceId) {
+        Participant participant = participantRepository
+                .findById(participantId)
+                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.participantNotExists(participantId)));
+        Conference conference = conferenceRepository
+                .findById(conferenceId)
+                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.conferenceNotExists(conferenceId)));
+        Room room = roomRepository
+                .findByConferenceId(conferenceId)
+                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.roomNotExists(conferenceId)));
 
-        return null;
+        if(participantRepository.countParticipantsByConferenceId(conferenceId).equals(room.getMaxSeats())){
+            throw new RuntimeException("Room is full!");
+        }
+
+        List<Conference> conferences = participant.getConference();
+        conferences.add(conference);
+        participant.setConference(conferences);
+        participantRepository.save(participant);
+        return converter.convertToDto(participant);
     }
 
     @Override

@@ -14,12 +14,12 @@ import com.test.test_task.entity.Participant;
 public interface ParticipantService {
 
     /**
-     * @param participant body of Participant
+     * @param participantId participant identifier
      * @param conferenceId which conference need to be included
      * @return added participant
      * @see com.test.test_task.service.impl.ParticipantServiceImpl
      */
-    ParticipantDto addToConference(Participant participant, Long conferenceId);
+    ParticipantDto addToConference(Long participantId, Long conferenceId);
 
     /**
      * @param conferenceId where need to delete Participant

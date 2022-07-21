@@ -70,28 +70,4 @@ public class ConferenceServiceImpl implements ConferenceService {
         participantRepository.saveAll(participants);
         return conferenceConverter.convertToDto(conference);
     }
-
-    @Override
-    public ConferenceDto attachParticipantById(Long conferenceId, Long participantId) {
-        Participant participant = participantRepository
-                .findById(participantId)
-                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.participantNotExists(participantId)));
-        Conference conference = conferenceRepository
-                .findById(conferenceId)
-                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.conferenceNotExists(conferenceId)));
-        Room room = roomRepository
-                .findByConferenceId(conferenceId)
-                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.roomNotExists(conferenceId)));
-
-        if(participantRepository.countParticipantsByConferenceId(conferenceId).equals(room.getMaxSeats())){
-            throw new RuntimeException("Room is full!");
-        }
-
-        List<Conference> conferences = participant.getConference();
-        conferences.add(conference);
-        participant.setConference(conferences);
-        participantRepository.save(participant);
-        return conferenceConverter.convertToDto(conference);
-    }
-
 }
