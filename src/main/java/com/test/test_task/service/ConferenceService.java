@@ -29,4 +29,6 @@ public interface ConferenceService {
      */
     ConferenceDto cancelById(Long conferenceId);
 
+    ConferenceDto attachParticipantById(Long conferenceId, Long participantId);
+
 }

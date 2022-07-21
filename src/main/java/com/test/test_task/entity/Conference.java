@@ -35,7 +35,11 @@ public class Conference {
     @Column(name = "end_date")
     private LocalDateTime endDate;
 
-    @OneToMany(mappedBy = "conference", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "conference",cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE,
+            CascadeType.ALL
+    })
     private List<Participant> participants = new ArrayList<>();
 
     @OneToOne

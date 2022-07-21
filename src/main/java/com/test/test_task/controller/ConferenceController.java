@@ -39,6 +39,12 @@ public class ConferenceController {
         return conferenceService.create(conference, roomId);
     }
 
+    @PostMapping("{conferenceId}/add/{participantId}")
+    public ConferenceDto attachParticipant(@PathVariable Long participantId,
+                                           @PathVariable Long conferenceId){
+        return conferenceService.attachParticipantById(conferenceId, participantId);
+    }
+
     /**
      * DELETE request to Cancel current Conference
      *

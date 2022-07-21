@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @RestController
-@RequestMapping("/api/v1/conference/{conferenceId}/participants")
+@RequestMapping("/api/v1/participants")
 public class ParticipantController {
 
     private final ParticipantService participantService;
@@ -29,15 +29,13 @@ public class ParticipantController {
     /**
      * POST request to create new participant
      *
-     * @param conferenceId exists conference
      * @param participantDto body of new participant
      * @return Created Participant
      */
     @PostMapping
-    public ParticipantDto create(@PathVariable Long conferenceId,
-                                 @RequestBody ParticipantDto participantDto){
+    public ParticipantDto create(@RequestBody ParticipantDto participantDto){
         Participant participant = participantConverter.convert(participantDto);
-        return participantService.addToConference(participant, conferenceId);
+        return participantService.create(participant);
     }
 
     /**
@@ -47,7 +45,7 @@ public class ParticipantController {
      * @param participantId participant needed to be deleted
      * @return Delete Participant
      */
-    @DeleteMapping("{participantId}") ParticipantDto delete(@PathVariable Long conferenceId,
+    @DeleteMapping("{participantId}/leave/{conferenceId}") ParticipantDto delete(@PathVariable Long conferenceId,
                                                                @PathVariable Long participantId){
         return participantService.deleteById(conferenceId, participantId);
     }

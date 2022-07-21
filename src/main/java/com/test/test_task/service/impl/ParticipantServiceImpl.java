@@ -13,6 +13,7 @@ import com.test.test_task.util.ExceptionMessageStorage;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 /**
  * Implementation of ParticipantService
@@ -36,25 +37,28 @@ public class ParticipantServiceImpl implements ParticipantService {
         this.roomRepository = roomRepository;
     }
 
+
+
     @Override
     public ParticipantDto addToConference(Participant participant, Long conferenceId) {
-        Conference conference = conferenceRepository
-                .findById(conferenceId)
-                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.conferenceNotExists(conferenceId)));
-        Room room = roomRepository
-                .findByConferenceId(conferenceId)
-                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.roomNotExists(conferenceId)));
+//        Conference conference = conferenceRepository
+//                .findById(conferenceId)
+//                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.conferenceNotExists(conferenceId)));
+//        Room room = roomRepository
+//                .findByConferenceId(conferenceId)
+//                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.roomNotExists(conferenceId)));
+//
+//        Long amountParticipantsOnConference = participantRepository.countParticipantsByConferenceId(conferenceId);
+//        Long roomMax = room.getMaxSeats();
+//        if(amountParticipantsOnConference >= roomMax){
+//            throw new RuntimeException(ExceptionMessageStorage.roomIsFull(room.getId()));
+//        }
+//        participant.setConference(new A(conference);
+//        Participant newParticipant = participantRepository.save(participant);
+//
+//        return converter.convertToDto(newParticipant);
 
-        Long amountParticipantsOnConference = participantRepository.countParticipantsByConferenceId(conferenceId);
-        Long roomMax = room.getMaxSeats();
-        if(amountParticipantsOnConference >= roomMax){
-            throw new RuntimeException(ExceptionMessageStorage.roomIsFull(room.getId()));
-        }
-
-        participant.setConference(conference);
-        Participant newParticipant = participantRepository.save(participant);
-
-        return converter.convertToDto(newParticipant);
+        return null;
     }
 
     @Override
@@ -66,12 +70,19 @@ public class ParticipantServiceImpl implements ParticipantService {
         Participant participant = participantRepository
                 .findById(participantId)
                 .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.participantNotExists(participantId)));
-        if(!participant.getConference().getId().equals(conferenceId)){
-            throw new RuntimeException(ExceptionMessageStorage.participantNotIncluded(participantId));
-        }
 
-        participantRepository.deleteById(participantId);
+        List<Conference> conferences = participant.getConference();
+        conferences.remove(conference);
+
+        participantRepository.save(participant);
 
         return converter.convertToDto(participant);
+    }
+
+    @Override
+    public ParticipantDto create(Participant participant) {
+        Participant newParticipant = participantRepository.save(participant);
+
+        return converter.convertToDto(newParticipant);
     }
 }

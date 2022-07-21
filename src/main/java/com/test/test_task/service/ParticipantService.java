@@ -29,4 +29,7 @@ public interface ParticipantService {
      */
     ParticipantDto deleteById(Long conferenceId, Long participantId);
 
+
+    ParticipantDto create(Participant participant);
+
 }
