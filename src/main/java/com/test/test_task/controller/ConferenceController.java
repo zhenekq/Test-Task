@@ -31,11 +31,12 @@ public class ConferenceController {
      * @param conferenceDto body of conference
      * @return Created Conference
      */
-    @PostMapping
-    public ConferenceDto create(@RequestBody ConferenceDto conferenceDto){
+    @PostMapping("/room/{roomId}")
+    public ConferenceDto create(@RequestBody ConferenceDto conferenceDto,
+                                @PathVariable Long roomId){
         Conference conference = conferenceConverter.convert(conferenceDto);
 
-        return conferenceService.create(conference);
+        return conferenceService.create(conference, roomId);
     }
 
     /**

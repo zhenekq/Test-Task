@@ -38,7 +38,8 @@ public class Conference {
     @OneToMany(mappedBy = "conference", cascade = CascadeType.ALL)
     private List<Participant> participants = new ArrayList<>();
 
-    @OneToOne(mappedBy = "conference", cascade = CascadeType.ALL)
+    @OneToOne
+    @JoinColumn(name = "room_id", referencedColumnName = "id")
     private Room room;
 
     public Conference(Long id) {

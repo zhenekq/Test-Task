@@ -44,17 +44,15 @@ public class ParticipantServiceImpl implements ParticipantService {
         Room room = roomRepository
                 .findByConferenceId(conferenceId)
                 .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.roomNotExists(conferenceId)));
-        if(!room.getIsAvailable()){
+
+        Long amountParticipantsOnConference = participantRepository.countParticipantsByConferenceId(conferenceId);
+        Long roomMax = room.getMaxSeats();
+        if(amountParticipantsOnConference >= roomMax){
             throw new RuntimeException(ExceptionMessageStorage.roomIsFull(room.getId()));
         }
 
         participant.setConference(conference);
         Participant newParticipant = participantRepository.save(participant);
-
-        if((participantRepository.countParticipantsByConferenceId(conferenceId)).equals(room.getMaxSeats())){
-            room.setIsAvailable(Boolean.FALSE);
-            roomRepository.save(room);
-        }
 
         return converter.convertToDto(newParticipant);
     }
@@ -65,10 +63,6 @@ public class ParticipantServiceImpl implements ParticipantService {
                 .findById(conferenceId)
                 .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.conferenceNotExists(conferenceId)));
 
-        Room room = roomRepository
-                .findByConferenceId(conferenceId)
-                .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.roomNotExists(conferenceId)));
-
         Participant participant = participantRepository
                 .findById(participantId)
                 .orElseThrow(() -> new EntityNotFoundException(ExceptionMessageStorage.participantNotExists(participantId)));
@@ -78,10 +72,6 @@ public class ParticipantServiceImpl implements ParticipantService {
 
         participantRepository.deleteById(participantId);
 
-        if(participantRepository.countParticipantsByConferenceId(conferenceId) < (room.getMaxSeats())){
-            room.setIsAvailable(Boolean.TRUE);
-            roomRepository.save(room);
-        }
         return converter.convertToDto(participant);
     }
 }

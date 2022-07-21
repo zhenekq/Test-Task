@@ -21,7 +21,6 @@ public class RoomConverter implements EntityConverter<Room, RoomDto> {
     @Override
     public RoomDto convertToDto(Room room) {
         RoomDto dto = new RoomDto();
-        dto.setIsAvailable(room.getIsAvailable());
         dto.setId(room.getId());
         dto.setMaxSeats(room.getMaxSeats());
 
@@ -40,7 +39,6 @@ public class RoomConverter implements EntityConverter<Room, RoomDto> {
     public Room convert(RoomDto roomDto) {
         Room room = new Room();
         room.setId(roomDto.getId());
-        room.setIsAvailable(roomDto.getIsAvailable());
         room.setMaxSeats(roomDto.getMaxSeats());
 
         return room;

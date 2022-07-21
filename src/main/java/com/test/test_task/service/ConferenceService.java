@@ -19,7 +19,7 @@ public interface ConferenceService {
      * @return new conference
      * @see com.test.test_task.service.impl.ConferenceServiceImpl
      */
-    ConferenceDto create(Conference conference);
+    ConferenceDto create(Conference conference, Long roomId);
 
 
     /**

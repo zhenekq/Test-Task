@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @RestController
-@RequestMapping("/api/v1/conference/{conferenceId}/room")
+@RequestMapping("/api/v1/room")
 public class RoomController {
 
     private final RoomService roomService;
@@ -28,29 +28,25 @@ public class RoomController {
     /**
      * POST request to create room
      *
-     * @param conferenceId needed conference
      * @param roomDto room info
      * @return room
      */
     @PostMapping
-    public RoomDto createRoom(@PathVariable Long conferenceId,
-                              @RequestBody RoomDto roomDto){
+    public RoomDto createRoom(@RequestBody RoomDto roomDto){
         Room room = converter.convert(roomDto);
 
-        return roomService.createRoom(conferenceId, room);
+        return roomService.createRoom(room);
     }
 
     /**
      * GET request to get availability of conference's room
      *
-     * @param conferenceId needed conference
      * @param roomId needed room
      * @return TRUE / FALSE
      */
-    @GetMapping("{roomId}/available")
-    public Boolean isAvailable(@PathVariable Long conferenceId,
-                               @PathVariable Long roomId){
-        return roomService.isAvailableById(conferenceId, roomId);
+    @GetMapping("{roomId}")
+    public Boolean isAvailable(@PathVariable Long roomId){
+        return roomService.isAvailableById(roomId);
     }
 
 }

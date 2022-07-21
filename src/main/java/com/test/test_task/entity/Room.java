@@ -24,9 +24,7 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Long maxSeats;
-    private Boolean isAvailable;
 
-    @OneToOne
-    @JoinColumn(name = "conference_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "room")
     private Conference conference;
 }

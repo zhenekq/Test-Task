@@ -18,5 +18,4 @@ import lombok.*;
 public class RoomDto {
     private Long id;
     private Long maxSeats;
-    private Boolean isAvailable;
 }
