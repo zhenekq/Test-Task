@@ -20,6 +20,15 @@ public class ExceptionStorage {
         return String.format("Participant with id: %d not exists!", participantId);
     }
 
+    public static String roomNotExists(Long roomId){
+        return String.format("Room with id: %d not exists!", roomId);
+    }
 
+    public static String roomIsFull(Long roomId){
+        return String.format("Room with id: %d is full!", roomId);
+    }
 
+    public static String roomIsNotRelated(Long roomId){
+        return String.format("Room with id: %d is not related to conference", roomId);
+    }
 }

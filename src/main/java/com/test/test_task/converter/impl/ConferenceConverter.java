@@ -22,10 +22,9 @@ public class ConferenceConverter implements EntityConverter<Conference, Conferen
     public ConferenceDto convertToDto(Conference conference) {
         ConferenceDto dto = new ConferenceDto();
         dto.setId(conference.getId());
-        dto.setIsAvailable(conference.getIsAvailable());
-        dto.setMaxSeats(conference.getMaxSeats());
         dto.setName(conference.getName());
-
+        dto.setEndDate(conference.getEndDate());
+        dto.setStartDate(conference.getStartDate());
         return dto;
     }
 
@@ -41,10 +40,9 @@ public class ConferenceConverter implements EntityConverter<Conference, Conferen
     public Conference convert(ConferenceDto conferenceDto) {
         Conference conference = new Conference();
         conference.setId(conferenceDto.getId());
-        conference.setMaxSeats(conferenceDto.getMaxSeats());
         conference.setName(conferenceDto.getName());
-        conference.setIsAvailable(conferenceDto.getIsAvailable());
-
+        conference.setEndDate(conferenceDto.getEndDate());
+        conference.setStartDate(conferenceDto.getStartDate());
         return conference;
     }
 

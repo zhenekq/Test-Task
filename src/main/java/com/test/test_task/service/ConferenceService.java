@@ -21,12 +21,6 @@ public interface ConferenceService {
      */
     ConferenceDto create(Conference conference);
 
-    /**
-     * @param conferenceId of current conference
-     * @return is Conference available for new participants
-     * @see com.test.test_task.service.impl.ConferenceServiceImpl
-     */
-    Boolean isAvailableById(Long conferenceId);
 
     /**
      * @param conferenceId of current conference

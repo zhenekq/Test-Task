@@ -39,17 +39,6 @@ public class ConferenceController {
     }
 
     /**
-     * GET request to get availability of conference
-     *
-     * @param conferenceId needed conference
-     * @return TRUE / FALSE
-     */
-    @GetMapping("{conferenceId}/available")
-    public Boolean isAvailable(@PathVariable Long conferenceId){
-        return conferenceService.isAvailableById(conferenceId);
-    }
-
-    /**
      * DELETE request to Cancel current Conference
      *
      * @param conferenceId needed conference

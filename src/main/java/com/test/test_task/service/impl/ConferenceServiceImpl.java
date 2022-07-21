@@ -9,6 +9,7 @@ import com.test.test_task.util.ExceptionStorage;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 
 /**
  * Implementation of ConferenceService
@@ -31,18 +32,12 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     @Override
     public ConferenceDto create(Conference conference) {
-        conference.setIsAvailable(Boolean.TRUE);
+        conference.setStartDate(LocalDateTime.now());
+        conference.setEndDate(LocalDateTime.now());
         Conference newConference = conferenceRepository.save(conference);
         return conferenceConverter.convertToDto(newConference);
     }
 
-    @Override
-    public Boolean isAvailableById(Long conferenceId) {
-        Conference conference = conferenceRepository
-                .findById(conferenceId)
-                .orElseThrow(() -> new EntityNotFoundException(ExceptionStorage.conferenceNotExists(conferenceId)));
-        return conference.getIsAvailable();
-    }
 
     @Override
     public ConferenceDto cancelById(Long conferenceId) {

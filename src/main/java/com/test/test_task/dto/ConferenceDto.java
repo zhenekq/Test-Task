@@ -2,6 +2,9 @@ package com.test.test_task.dto;
 
 import lombok.*;
 
+import javax.persistence.Column;
+import java.time.LocalDateTime;
+
 /**
  * Data transfer object for entity Conference
  *
@@ -18,7 +21,7 @@ import lombok.*;
 @EqualsAndHashCode
 public class ConferenceDto {
     private Long id;
-    private Long maxSeats;
     private String name;
-    private Boolean isAvailable;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 }

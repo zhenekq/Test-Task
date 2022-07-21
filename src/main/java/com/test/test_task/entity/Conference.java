@@ -3,6 +3,7 @@ package com.test.test_task.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,14 +29,17 @@ public class Conference {
     @Column(name = "name", unique = true)
     private String name;
 
-    @Column(name = "max_seats")
-    private Long maxSeats;
+    @Column(name = "start_date")
+    private LocalDateTime startDate;
 
-    @Column(name = "is_available")
-    private Boolean isAvailable;
+    @Column(name = "end_date")
+    private LocalDateTime endDate;
 
     @OneToMany(mappedBy = "conference", cascade = CascadeType.ALL)
     private List<Participant> participants = new ArrayList<>();
+
+    @OneToOne(mappedBy = "conference", cascade = CascadeType.ALL)
+    private Room room;
 
     public Conference(Long id) {
         this.id = id;
