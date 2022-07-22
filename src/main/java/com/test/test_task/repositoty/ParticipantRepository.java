@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository for working with Participants
@@ -23,4 +24,6 @@ public interface ParticipantRepository extends JpaRepository<Participant, Long> 
      * @return Amount of participants that included in conference
      */
     Long countParticipantsByConferenceId(Long conferenceId);
+
+    Optional<Participant> findByUsername(String username);
 }
