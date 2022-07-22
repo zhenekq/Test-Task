@@ -1,7 +1,6 @@
 package com.test.test_task.repositoty;
 
 import com.test.test_task.entity.Conference;
-import com.test.test_task.entity.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

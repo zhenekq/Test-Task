@@ -1,6 +1,5 @@
 package com.test.test_task.service;
 
-import com.test.test_task.dto.RoomDto;
 import com.test.test_task.entity.Room;
 
 /**
@@ -25,5 +24,5 @@ public interface RoomService {
      * @return Room created for conference
      * @see com.test.test_task.service.impl.ConferenceServiceImpl
      */
-    RoomDto createRoom(Room room);
+    Room createRoom(Room room);
 }

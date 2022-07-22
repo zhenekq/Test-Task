@@ -1,13 +1,8 @@
 package com.test.test_task.service;
 
 import com.test.test_task.builder.ConferenceBuilder;
-import com.test.test_task.builder.ParticipantBuilder;
 import com.test.test_task.builder.RoomBuilder;
-import com.test.test_task.dto.ConferenceDto;
-import com.test.test_task.dto.ParticipantDto;
-import com.test.test_task.dto.RoomDto;
 import com.test.test_task.entity.Conference;
-import com.test.test_task.entity.Participant;
 import com.test.test_task.entity.Room;
 import net.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.DisplayName;
@@ -42,10 +37,10 @@ public class ConferenceServiceTest {
     @DisplayName("Create conference with valid data")
     void createNewConference(){
         Room room = new RoomBuilder().plain().createRoom();
-        RoomDto createdRoom = roomService.createRoom(room);
+        Room createdRoom = roomService.createRoom(room);
 
         Conference conference = new ConferenceBuilder().setRoom(room).setName(RandomString.make()).createConference();
-        ConferenceDto createdConference = conferenceService.create(conference, createdRoom.getId());
+        Conference createdConference = conferenceService.create(conference, createdRoom.getId());
 
         assertEquals(createdConference.getName(), conference.getName());
         assertEquals(createdRoom.getMaxSeats(), room.getMaxSeats());
@@ -55,12 +50,12 @@ public class ConferenceServiceTest {
     @DisplayName("Cancel conference by id")
     void cancelConference(){
         Room room = new RoomBuilder().plain().createRoom();
-        RoomDto createdRoom = roomService.createRoom(room);
+        Room createdRoom = roomService.createRoom(room);
 
         Conference conference = new ConferenceBuilder().setRoom(room).setName(RandomString.make()).createConference();
-        ConferenceDto createdConference = conferenceService.create(conference, createdRoom.getId());
+        Conference createdConference = conferenceService.create(conference, createdRoom.getId());
 
-        ConferenceDto canceledConference = conferenceService.cancelById(createdConference.getId());
+        Conference canceledConference = conferenceService.cancelById(createdConference.getId());
 
         assertEquals(canceledConference.getName(), createdConference.getName());
         assertEquals(createdRoom.getMaxSeats(), room.getMaxSeats());

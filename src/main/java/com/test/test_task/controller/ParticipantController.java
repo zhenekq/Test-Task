@@ -1,11 +1,15 @@
 package com.test.test_task.controller;
 
-import com.test.test_task.converter.EntityConverter;
 import com.test.test_task.dto.ParticipantDto;
 import com.test.test_task.entity.Participant;
 import com.test.test_task.service.ConferenceService;
 import com.test.test_task.service.ParticipantService;
+import org.modelmapper.ModelMapper;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * Controller that process Participant Logic
@@ -16,14 +20,15 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/participants")
+@Validated
 public class ParticipantController {
 
     private final ParticipantService participantService;
-    private final EntityConverter<Participant, ParticipantDto> participantConverter;
+    private final ModelMapper modelMapper;
 
-    public ParticipantController(ParticipantService participantService, EntityConverter<Participant, ParticipantDto> participantConverter) {
+    public ParticipantController(ParticipantService participantService, ModelMapper modelMapper) {
         this.participantService = participantService;
-        this.participantConverter = participantConverter;
+        this.modelMapper = modelMapper;
     }
 
     /**
@@ -33,15 +38,18 @@ public class ParticipantController {
      * @return Created Participant
      */
     @PostMapping
-    public ParticipantDto create(@RequestBody ParticipantDto participantDto){
-        Participant participant = participantConverter.convert(participantDto);
-        return participantService.create(participant);
+    public ParticipantDto create(@Valid  @RequestBody ParticipantDto participantDto, Errors errors){
+        Participant participant = modelMapper.map(participantDto, Participant.class);
+        Participant newParticipant = participantService.create(participant);
+        return modelMapper.map(newParticipant, ParticipantDto.class);
     }
 
     @PostMapping("{participantId}/attach/{conferenceId}")
     public ParticipantDto attach(@PathVariable Long participantId,
                                  @PathVariable Long conferenceId){
-        return participantService.addToConference(participantId, conferenceId);
+
+        Participant participant = participantService.addToConference(participantId, conferenceId);
+        return modelMapper.map(participant, ParticipantDto.class);
     }
 
     /**
@@ -53,7 +61,8 @@ public class ParticipantController {
      */
     @DeleteMapping("{participantId}/leave/{conferenceId}") ParticipantDto delete(@PathVariable Long conferenceId,
                                                                @PathVariable Long participantId){
-        return participantService.deleteById(conferenceId, participantId);
+        Participant participant = participantService.deleteById(conferenceId, participantId);
+        return modelMapper.map(participant, ParticipantDto.class);
     }
 
 }

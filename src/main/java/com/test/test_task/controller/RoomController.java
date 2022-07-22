@@ -1,10 +1,14 @@
 package com.test.test_task.controller;
 
-import com.test.test_task.converter.EntityConverter;
 import com.test.test_task.dto.RoomDto;
 import com.test.test_task.entity.Room;
 import com.test.test_task.service.RoomService;
+import org.modelmapper.ModelMapper;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * Controller that process Room Logic
@@ -15,14 +19,15 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/room")
+@Validated
 public class RoomController {
 
     private final RoomService roomService;
-    private final EntityConverter<Room, RoomDto> converter;
+    private final ModelMapper modelMapper;
 
-    public RoomController(RoomService roomService, EntityConverter<Room, RoomDto> converter) {
+    public RoomController(RoomService roomService, ModelMapper modelMapper) {
         this.roomService = roomService;
-        this.converter = converter;
+        this.modelMapper = modelMapper;
     }
 
     /**
@@ -32,10 +37,10 @@ public class RoomController {
      * @return room
      */
     @PostMapping
-    public RoomDto createRoom(@RequestBody RoomDto roomDto){
-        Room room = converter.convert(roomDto);
-
-        return roomService.createRoom(room);
+    public RoomDto createRoom(@Valid @RequestBody RoomDto roomDto, Errors errors){
+        Room room = modelMapper.map(roomDto, Room.class);
+        Room newRoom = roomService.createRoom(room);
+        return modelMapper.map(newRoom, RoomDto.class);
     }
 
     /**

@@ -1,6 +1,5 @@
 package com.test.test_task.service;
 
-import com.test.test_task.dto.ParticipantDto;
 import com.test.test_task.entity.Participant;
 
 /**
@@ -19,7 +18,7 @@ public interface ParticipantService {
      * @return added participant
      * @see com.test.test_task.service.impl.ParticipantServiceImpl
      */
-    ParticipantDto addToConference(Long participantId, Long conferenceId);
+    Participant addToConference(Long participantId, Long conferenceId);
 
     /**
      * @param conferenceId where need to delete Participant
@@ -27,9 +26,9 @@ public interface ParticipantService {
      * @return added participant
      * @see com.test.test_task.service.impl.ParticipantServiceImpl
      */
-    ParticipantDto deleteById(Long conferenceId, Long participantId);
+    Participant deleteById(Long conferenceId, Long participantId);
 
 
-    ParticipantDto create(Participant participant);
+    Participant create(Participant participant);
 
 }

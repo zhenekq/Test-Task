@@ -3,9 +3,6 @@ package com.test.test_task.service;
 import com.test.test_task.builder.ConferenceBuilder;
 import com.test.test_task.builder.ParticipantBuilder;
 import com.test.test_task.builder.RoomBuilder;
-import com.test.test_task.dto.ConferenceDto;
-import com.test.test_task.dto.ParticipantDto;
-import com.test.test_task.dto.RoomDto;
 import com.test.test_task.entity.Conference;
 import com.test.test_task.entity.Participant;
 import com.test.test_task.entity.Room;
@@ -14,13 +11,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ExtendWith(SpringExtension.class)
@@ -43,7 +39,7 @@ public class ParticipantServiceTest {
     @DisplayName("Participant create with valid data")
     void addParticipantWithValidData(){
         Participant participant = new ParticipantBuilder().setUsername(RandomString.make()).createParticipant();
-        ParticipantDto createdParticipant = service.create(participant);
+        Participant createdParticipant = service.create(participant);
 
         assertEquals(participant.getUsername(), createdParticipant.getUsername());
     }
@@ -52,15 +48,15 @@ public class ParticipantServiceTest {
     @DisplayName("Attach Participant to conference")
     void attachParticipantToConference(){
         Room room = new RoomBuilder().plain().createRoom();
-        RoomDto createdRoom = roomService.createRoom(room);
+        Room createdRoom = roomService.createRoom(room);
 
         Conference conference = new ConferenceBuilder().setRoom(room).setName(RandomString.make()).createConference();
-        ConferenceDto createdConference = conferenceService.create(conference, createdRoom.getId());
+        Conference createdConference = conferenceService.create(conference, createdRoom.getId());
 
         Participant participant = new ParticipantBuilder().setUsername(RandomString.make()).createParticipant();
-        ParticipantDto createdParticipant = service.create(participant);
+        Participant createdParticipant = service.create(participant);
 
-        ParticipantDto dto = service.addToConference(createdParticipant.getId(), createdConference.getId());
+        Participant dto = service.addToConference(createdParticipant.getId(), createdConference.getId());
 
         assertEquals(createdParticipant.getId(), dto.getId());
         assertEquals(createdConference.getName(), conference.getName());
@@ -71,15 +67,15 @@ public class ParticipantServiceTest {
     @DisplayName("Leave participant conference by id")
     void leaveParticipantConference(){
         Room room = new RoomBuilder().plain().createRoom();
-        RoomDto createdRoom = roomService.createRoom(room);
+        Room createdRoom = roomService.createRoom(room);
 
         Conference conference = new ConferenceBuilder().setRoom(room).setName(RandomString.make()).createConference();
-        ConferenceDto createdConference = conferenceService.create(conference, createdRoom.getId());
+        Conference createdConference = conferenceService.create(conference, createdRoom.getId());
 
         Participant participant = new ParticipantBuilder().setUsername(RandomString.make()).createParticipant();
-        ParticipantDto createdParticipant = service.create(participant);
+        Participant createdParticipant = service.create(participant);
 
-        ParticipantDto dto = service.deleteById(createdConference.getId(), createdParticipant.getId());
+        Participant dto = service.deleteById(createdConference.getId(), createdParticipant.getId());
 
         assertEquals(createdParticipant.getId(), dto.getId());
         assertEquals(createdConference.getName(), conference.getName());

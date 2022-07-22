@@ -1,7 +1,5 @@
 package com.test.test_task.service.impl;
 
-import com.test.test_task.converter.EntityConverter;
-import com.test.test_task.dto.ParticipantDto;
 import com.test.test_task.entity.Conference;
 import com.test.test_task.entity.Participant;
 import com.test.test_task.entity.Room;
@@ -11,7 +9,6 @@ import com.test.test_task.repositoty.ParticipantRepository;
 import com.test.test_task.repositoty.RoomRepository;
 import com.test.test_task.service.ParticipantService;
 import com.test.test_task.util.ExceptionMessageStorage;
-import com.test.test_task.validation.EntityValidation;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -30,22 +27,18 @@ public class ParticipantServiceImpl implements ParticipantService {
 
     private final ParticipantRepository participantRepository;
     private final ConferenceRepository conferenceRepository;
-    private final EntityConverter<Participant, ParticipantDto> converter;
     private final RoomRepository roomRepository;
-    private final EntityValidation<Participant> participantEntityValidation;
 
-    public ParticipantServiceImpl(ParticipantRepository participantRepository, ConferenceRepository conferenceRepository, EntityConverter<Participant, ParticipantDto> converter, RoomRepository roomRepository, EntityValidation<Participant> participantEntityValidation) {
+    public ParticipantServiceImpl(ParticipantRepository participantRepository, ConferenceRepository conferenceRepository, RoomRepository roomRepository) {
         this.participantRepository = participantRepository;
         this.conferenceRepository = conferenceRepository;
-        this.converter = converter;
         this.roomRepository = roomRepository;
-        this.participantEntityValidation = participantEntityValidation;
     }
 
 
 
     @Override
-    public ParticipantDto addToConference(Long participantId, Long conferenceId) {
+    public Participant addToConference(Long participantId, Long conferenceId) {
         Participant participant = participantRepository
                 .findById(participantId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionMessageStorage.roomNotExists(conferenceId), HttpStatus.NOT_FOUND));
@@ -63,12 +56,12 @@ public class ParticipantServiceImpl implements ParticipantService {
         List<Conference> conferences = participant.getConference();
         conferences.add(conference);
         participant.setConference(conferences);
-        participantRepository.save(participant);
-        return converter.convertToDto(participant);
+
+        return participantRepository.save(participant);
     }
 
     @Override
-    public ParticipantDto deleteById(Long conferenceId, Long participantId) {
+    public Participant deleteById(Long conferenceId, Long participantId) {
         Conference conference = conferenceRepository
                 .findById(conferenceId)
                 .orElseThrow(() ->  new BusinessLogicException(ExceptionMessageStorage.conferenceNotExists(conferenceId), HttpStatus.NOT_FOUND));
@@ -82,14 +75,11 @@ public class ParticipantServiceImpl implements ParticipantService {
 
         participantRepository.save(participant);
 
-        return converter.convertToDto(participant);
+        return participant;
     }
 
     @Override
-    public ParticipantDto create(Participant participant) {
-        if(!participantEntityValidation.isValid(participant)){
-            throw new BusinessLogicException(ExceptionMessageStorage.participantIsNotValid(), HttpStatus.BAD_REQUEST);
-        }
+    public Participant create(Participant participant) {
 
         Optional<Participant> another = participantRepository.findByUsername(participant.getUsername());
         if(another.isPresent()){
@@ -98,6 +88,6 @@ public class ParticipantServiceImpl implements ParticipantService {
 
         Participant newParticipant = participantRepository.save(participant);
 
-        return converter.convertToDto(newParticipant);
+        return newParticipant;
     }
 }

@@ -1,6 +1,5 @@
 package com.test.test_task.service;
 
-import com.test.test_task.dto.ConferenceDto;
 import com.test.test_task.entity.Conference;
 
 
@@ -19,7 +18,7 @@ public interface ConferenceService {
      * @return new conference
      * @see com.test.test_task.service.impl.ConferenceServiceImpl
      */
-    ConferenceDto create(Conference conference, Long roomId);
+    Conference create(Conference conference, Long roomId);
 
 
     /**
@@ -27,6 +26,6 @@ public interface ConferenceService {
      * @return Canceled conference
      * @see com.test.test_task.service.impl.ConferenceServiceImpl
      */
-    ConferenceDto cancelById(Long conferenceId);
+    Conference cancelById(Long conferenceId);
 
 }

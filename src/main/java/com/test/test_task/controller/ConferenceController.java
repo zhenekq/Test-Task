@@ -1,10 +1,14 @@
 package com.test.test_task.controller;
 
-import com.test.test_task.converter.EntityConverter;
 import com.test.test_task.dto.ConferenceDto;
 import com.test.test_task.entity.Conference;
 import com.test.test_task.service.ConferenceService;
+import org.modelmapper.ModelMapper;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * Controller that process Conference Logic
@@ -15,14 +19,15 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/conference")
+@Validated
 public class ConferenceController {
 
     private final ConferenceService conferenceService;
-    private final EntityConverter<Conference, ConferenceDto> conferenceConverter;
+    private final ModelMapper modelMapper;
 
-    public ConferenceController(ConferenceService conferenceService, EntityConverter<Conference, ConferenceDto> conferenceConverter) {
+    public ConferenceController(ConferenceService conferenceService, ModelMapper modelMapper) {
         this.conferenceService = conferenceService;
-        this.conferenceConverter = conferenceConverter;
+        this.modelMapper = modelMapper;
     }
 
     /**
@@ -32,11 +37,12 @@ public class ConferenceController {
      * @return Created Conference
      */
     @PostMapping("/room/{roomId}")
-    public ConferenceDto create(@RequestBody ConferenceDto conferenceDto,
-                                @PathVariable Long roomId){
-        Conference conference = conferenceConverter.convert(conferenceDto);
+    public ConferenceDto create(@Valid @RequestBody ConferenceDto conferenceDto,
+                                @PathVariable Long roomId, Errors errors){
+        Conference conference = modelMapper.map(conferenceDto, Conference.class);
 
-        return conferenceService.create(conference, roomId);
+        Conference newConference = conferenceService.create(conference, roomId);
+        return modelMapper.map(newConference, ConferenceDto.class);
     }
 
     /**
@@ -47,7 +53,8 @@ public class ConferenceController {
      */
     @DeleteMapping("{conferenceId}/cancel")
     public ConferenceDto cancel(@PathVariable Long conferenceId){
-        return conferenceService.cancelById(conferenceId);
+        Conference conference = conferenceService.cancelById(conferenceId);
+        return modelMapper.map(conference, ConferenceDto.class);
     }
 
 }

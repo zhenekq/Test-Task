@@ -1,7 +1,9 @@
 package com.test.test_task.dto;
 
 import lombok.*;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 /**
@@ -18,8 +20,10 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @EqualsAndHashCode
+@Validated
 public class ConferenceDto {
     private Long id;
+    @NotBlank
     private String name;
     private LocalDateTime startDate;
     private LocalDateTime endDate;

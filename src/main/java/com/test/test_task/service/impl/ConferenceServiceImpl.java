@@ -1,7 +1,5 @@
 package com.test.test_task.service.impl;
 
-import com.test.test_task.converter.EntityConverter;
-import com.test.test_task.dto.ConferenceDto;
 import com.test.test_task.entity.Conference;
 import com.test.test_task.entity.Participant;
 import com.test.test_task.entity.Room;
@@ -11,7 +9,6 @@ import com.test.test_task.repositoty.ParticipantRepository;
 import com.test.test_task.repositoty.RoomRepository;
 import com.test.test_task.service.ConferenceService;
 import com.test.test_task.util.ExceptionMessageStorage;
-import com.test.test_task.validation.EntityValidation;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -30,24 +27,17 @@ import java.util.List;
 public class ConferenceServiceImpl implements ConferenceService {
 
     private final ConferenceRepository conferenceRepository;
-    private final EntityConverter<Conference, ConferenceDto> conferenceConverter;
     private final RoomRepository roomRepository;
     private final ParticipantRepository participantRepository;
-    private final EntityValidation<Conference> conferenceEntityValidation;
 
-    public ConferenceServiceImpl(ConferenceRepository conferenceRepository, EntityConverter<Conference, ConferenceDto> conferenceConverter, RoomRepository roomRepository, ParticipantRepository participantRepository, EntityValidation<Conference> conferenceEntityValidation) {
+    public ConferenceServiceImpl(ConferenceRepository conferenceRepository,RoomRepository roomRepository, ParticipantRepository participantRepository) {
         this.conferenceRepository = conferenceRepository;
-        this.conferenceConverter = conferenceConverter;
         this.roomRepository = roomRepository;
         this.participantRepository = participantRepository;
-        this.conferenceEntityValidation = conferenceEntityValidation;
     }
 
     @Override
-    public ConferenceDto create(Conference conference, Long roomId) {
-        if(!conferenceEntityValidation.isValid(conference)){
-            throw new BusinessLogicException(ExceptionMessageStorage.conferenceNotValid(), HttpStatus.BAD_REQUEST);
-        }
+    public Conference create(Conference conference, Long roomId) {
         List<Conference> conferences = conferenceRepository.findAllByRoomId(roomId);
         if(conferenceRepository.findByName(conference.getName()) != null){
             throw new BusinessLogicException(ExceptionMessageStorage.conferenceExists(conference.getName()), HttpStatus.CONFLICT);
@@ -62,18 +52,18 @@ public class ConferenceServiceImpl implements ConferenceService {
         conference.setEndDate(LocalDateTime.now());
         conference.setRoom(room);
         Conference newConference = conferenceRepository.save(conference);
-        return conferenceConverter.convertToDto(newConference);
+        return newConference;
     }
 
 
     @Override
-    public ConferenceDto cancelById(Long conferenceId) {
+    public Conference cancelById(Long conferenceId) {
         Conference conference = conferenceRepository
                 .findById(conferenceId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionMessageStorage.conferenceNotExists(conferenceId), HttpStatus.NOT_FOUND));
         List<Participant> participants = conference.getParticipants();
         participants.forEach(el -> el.setConference(null));
         participantRepository.saveAll(participants);
-        return conferenceConverter.convertToDto(conference);
+        return conference;
     }
 }

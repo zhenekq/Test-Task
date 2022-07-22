@@ -1,6 +1,9 @@
 package com.test.test_task.dto;
 
 import lombok.*;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.NotBlank;
 
 /**
  * Data transfer object for entity Participant
@@ -16,7 +19,9 @@ import lombok.*;
 @Setter
 @ToString
 @EqualsAndHashCode
+@Validated
 public class ParticipantDto {
     private Long id;
+    @NotBlank
     private String username;
 }

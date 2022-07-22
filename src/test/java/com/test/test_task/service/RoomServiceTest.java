@@ -3,9 +3,6 @@ package com.test.test_task.service;
 import com.test.test_task.builder.ConferenceBuilder;
 import com.test.test_task.builder.ParticipantBuilder;
 import com.test.test_task.builder.RoomBuilder;
-import com.test.test_task.dto.ConferenceDto;
-import com.test.test_task.dto.ParticipantDto;
-import com.test.test_task.dto.RoomDto;
 import com.test.test_task.entity.Conference;
 import com.test.test_task.entity.Participant;
 import com.test.test_task.entity.Room;
@@ -42,7 +39,7 @@ public class RoomServiceTest {
     @DisplayName("Create room with valid data")
     void createNewConference(){
         Room room = new RoomBuilder().plain().createRoom();
-        RoomDto createdRoom = roomService.createRoom(room);
+        Room createdRoom = roomService.createRoom(room);
 
         assertEquals(createdRoom.getMaxSeats(), room.getMaxSeats());
     }
@@ -51,11 +48,11 @@ public class RoomServiceTest {
     @DisplayName("Check is room unavailable")
     void checkIsRoomAvailableFalse(){
         Room room = new RoomBuilder().plain().createRoom();
-        RoomDto createdRoom = roomService.createRoom(room);
+        Room createdRoom = roomService.createRoom(room);
 
-        ConferenceDto createdConference = getConferenceDto(room, createdRoom, RandomString.make());
-        ParticipantDto first = getParticipantDto(RandomString.make());
-        ParticipantDto second = getParticipantDto(RandomString.make());
+        Conference createdConference = getConferenceDto(room, createdRoom, RandomString.make());
+        Participant first = getParticipantDto(RandomString.make());
+        Participant second = getParticipantDto(RandomString.make());
 
         service.addToConference(first.getId(), createdConference.getId());
         service.addToConference(second.getId(), createdConference.getId());
@@ -69,10 +66,10 @@ public class RoomServiceTest {
     @DisplayName("Check is room available")
     void checkIsRoomAvailableTrue(){
         Room room = new RoomBuilder().plain().createRoom();
-        RoomDto createdRoom = roomService.createRoom(room);
+        Room createdRoom = roomService.createRoom(room);
 
-        ConferenceDto createdConference = getConferenceDto(room, createdRoom, RandomString.make());
-        ParticipantDto first = getParticipantDto(RandomString.make());
+        Conference createdConference = getConferenceDto(room, createdRoom, RandomString.make());
+        Participant first = getParticipantDto(RandomString.make());
 
         service.addToConference(first.getId(), createdConference.getId());
 
@@ -81,15 +78,15 @@ public class RoomServiceTest {
         assertEquals(Boolean.TRUE, available);
     }
 
-    private ConferenceDto getConferenceDto(Room room, RoomDto createdRoom, String name) {
+    private Conference getConferenceDto(Room room, Room createdRoom, String name) {
         Conference conference = new ConferenceBuilder().setRoom(room).setName(name).createConference();
-        ConferenceDto createdConference = conferenceService.create(conference, createdRoom.getId());
+        Conference createdConference = conferenceService.create(conference, createdRoom.getId());
         return createdConference;
     }
 
-    private ParticipantDto getParticipantDto(String username) {
+    private Participant getParticipantDto(String username) {
         Participant participant = new ParticipantBuilder().setUsername(username).createParticipant();
-        ParticipantDto createdParticipant = service.create(participant);
+        Participant createdParticipant = service.create(participant);
         return createdParticipant;
     }
 }
