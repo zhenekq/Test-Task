@@ -55,7 +55,6 @@ public class ConferenceServiceImpl implements ConferenceService {
         return newConference;
     }
 
-
     @Override
     public Conference cancelById(Long conferenceId) {
         Conference conference = conferenceRepository

@@ -35,8 +35,6 @@ public class ParticipantServiceImpl implements ParticipantService {
         this.roomRepository = roomRepository;
     }
 
-
-
     @Override
     public Participant addToConference(Long participantId, Long conferenceId) {
         Participant participant = participantRepository

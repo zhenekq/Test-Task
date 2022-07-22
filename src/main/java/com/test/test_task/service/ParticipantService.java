@@ -11,7 +11,6 @@ import com.test.test_task.entity.Participant;
  */
 
 public interface ParticipantService {
-
     /**
      * @param participantId participant identifier
      * @param conferenceId which conference need to be included
@@ -28,7 +27,10 @@ public interface ParticipantService {
      */
     Participant deleteById(Long conferenceId, Long participantId);
 
-
+    /**
+     * @param participant body of participant
+     * @return added participant
+     * @see com.test.test_task.service.impl.ParticipantServiceImpl
+     */
     Participant create(Participant participant);
-
 }

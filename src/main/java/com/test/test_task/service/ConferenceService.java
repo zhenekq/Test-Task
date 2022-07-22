@@ -12,7 +12,6 @@ import com.test.test_task.entity.Conference;
  */
 
 public interface ConferenceService {
-
     /**
      * @param conference body of created conference
      * @return new conference
@@ -27,5 +26,4 @@ public interface ConferenceService {
      * @see com.test.test_task.service.impl.ConferenceServiceImpl
      */
     Conference cancelById(Long conferenceId);
-
 }

@@ -39,8 +39,6 @@ public class ExceptionControllerHandler {
         return new ResponseEntity<>(buildMethodValidationErrors(exception.getAllErrors()), HttpStatus.BAD_REQUEST);
     }
 
-
-
     private List<ErrorBody> buildValidationErrors(
             Set<ConstraintViolation<?>> violations) {
         return violations.

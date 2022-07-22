@@ -11,7 +11,6 @@ import com.test.test_task.entity.Room;
  */
 
 public interface RoomService {
-
     /**
      * @param roomId of current room
      * @return is Conference available for new participants
