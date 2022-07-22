@@ -37,13 +37,15 @@ public class RoomServiceImpl implements RoomService {
                 .findById(roomId)
                 .orElseThrow(() ->  new BusinessLogicException(ExceptionMessageStorage.roomNotExists(roomId), HttpStatus.NOT_FOUND));
         Conference conference = conferenceRepository.findByRoomId(roomId);
+
+        Long amountOfParticipants = participantRepository.countParticipantsByConferenceId(conference.getId());
         if(conference == null){
             return true;
         }
-        if(participantRepository.countParticipantsByConferenceId(conference.getId()) == null){
+        if(amountOfParticipants == null){
             return true;
         }
-        if(room.getMaxSeats().equals(participantRepository.countParticipantsByConferenceId(conference.getId()))){
+        if(room.getMaxSeats().equals(amountOfParticipants)){
             return false;
         }else{
             return true;

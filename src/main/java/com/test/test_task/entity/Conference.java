@@ -39,7 +39,7 @@ public class Conference {
             CascadeType.PERSIST,
             CascadeType.MERGE,
             CascadeType.ALL
-    })
+    },fetch = FetchType.EAGER)
     private List<Participant> participants = new ArrayList<>();
 
     @OneToOne

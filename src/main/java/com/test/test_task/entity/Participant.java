@@ -32,7 +32,7 @@ public class Participant {
                     CascadeType.PERSIST,
                     CascadeType.MERGE,
                     CascadeType.ALL
-    })
+    }, fetch = FetchType.EAGER)
     @JoinTable(
             name = "conference_participant",
             joinColumns = { @JoinColumn(name = "participant_id") },
